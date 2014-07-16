@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta-runner name="NewRelic Deployment Notifier">
+  <description>Notify NewRelic that a new deployment has occurred</description>
+  <settings>
+    <parameters>
+      <!-- Mandatory Fields -->
+      <param name="teamcity.tool.newrelic.deploymentnotifier.apikey" value="" spec="text description='NewRelic API Key' display='normal' label='API Key' validationMode='not_empty'" />
+      <!-- Optional Fields -->
+      <param name="teamcity.tool.newrelic.deploymentnotifier.changelog" value="" spec="text description='A list of changes for this deployment' display='normal' label='Changelog' validationMode=''" />
+    </parameters>
+    <build-runners>
+      <runner name="NewRelicDeploymentNotifier" type="jetbrains_powershell">
+        <parameters>
+          <param name="jetbrains_powershell_execution" value="PS1" />
+          <param name="jetbrains_powershell_noprofile" value="true" />
+          <param name="jetbrains_powershell_errorToError" value="error" />
+          <param name="jetbrains_powershell_script_mode" value="CODE" />
+          <param name="jetbrains_powershell_bitness" value="x86" />
+          <param name="jetbrains_powershell_minVersion" value="3.0" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="jetbrains_powershell_script_code">
+            <![CDATA[
+$toolPath = "`"%teamcity.agent.tools.dir%\ilmerge-metarunner\bin\ilmerge.exe`"";
+$apiKey = "%teamcity.tool.newrelic.deploymentnotifier.apikey%";
+$changeLog = "%teamcity.tool.newrelic.deploymentnotifier.changelog%";
+
+try 
+{
+  $command = "";
+
+  if ([String]::IsNullOrEmpty($apiKey)){
+    throw "API Key is required"
+  } else {
+    $command += "-H `"x-api-key:$apiKey`" ";
+  }
+
+  $commandToExecute = "& " + $toolPath + $command
+  
+  Write-Host "Command to Execute: " $commandToExecute
+
+  $result = Invoke-Expression $commandToExecute
+  
+  Write-Host $result
+} 
+catch 
+{
+  Write-Error $_
+  [System.Environment]::Exit(1)
+}
+            ]]>
+          </param>
+        </parameters>
+      </runner>
+    </build-runners>
+    <requirements />
+  </settings>
+</meta-runner>
