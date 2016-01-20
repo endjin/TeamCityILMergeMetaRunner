@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<meta-runner name="NewRelic Deployment Notifier">
-  <description>Notify NewRelic that a new deployment has occurred</description>
+<!-- 
+ilmerge 
+[/lib:directory]* - set /lib for each directory 
+[/log[:filename]] 
+[/keyfile:filename 
+[/delaysign]] 
+[/internalize[:filename]] 
+[/t[arget]:(library|exe|winexe)] 
+[/closed] 
+[/ndebug] 
+[/ver:version] 
+[/copyattrs [/allowMultiple]] 
+[/xmldocs] 
+[/attr:filename] 
+([/targetplatform:<version>[,<platformdir>]]|v1|v1.1|v2|v4) 
+[/useFullPublicKeyForReferences] 
+[/zeroPeKind] 
+[/wildcards] 
+[/allowDup[:typename]]* 
+[/allowDuplicateResources] 
+[/union] 
+[/align:n] 
+/out:filename <primary assembly> [<other assemblies>...]
+-->
+<meta-runner name="ILMerge">
+  <description>Run ILMerge within TeamCity</description>
   <settings>
     <parameters>
       <!-- Mandatory Fields -->
-      <param name="teamcity.tool.newrelic.deploymentnotifier.apikey" value="" spec="text description='NewRelic API Key' display='normal' label='API Key' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge". value="" spec="text description='' display='normal' label='' validationMode='not_empty'" />
       <!-- Optional Fields -->
-      <param name="teamcity.tool.newrelic.deploymentnotifier.changelog" value="" spec="text description='A list of changes for this deployment' display='normal' label='Changelog' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge" value="" spec="text description='' display='normal' label='' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge" value="false" spec="checkbox checkedValue='true' uncheckedValue='false' description='Specifies that all tags should be included in the release notes, if not specified then only the issues since the last tag are included.' display='normal' label='All Tags:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge" value="" spec="select data_1='tomcat7x' data_3='tomcat6x' data_5='jetty9x' data_7='jetty8x' description='Select type and version of the servlet container' display='normal' label='Container type:' label_1='Tomcat 7.x' label_3='Tomcat 6.x' label_5='Jetty 9.x' label_7='Jetty 8.x'" />
+      
     </parameters>
     <build-runners>
-      <runner name="NewRelicDeploymentNotifier" type="jetbrains_powershell">
+      <runner name="ILMerge" type="jetbrains_powershell">
         <parameters>
           <param name="jetbrains_powershell_execution" value="PS1" />
           <param name="jetbrains_powershell_noprofile" value="true" />
