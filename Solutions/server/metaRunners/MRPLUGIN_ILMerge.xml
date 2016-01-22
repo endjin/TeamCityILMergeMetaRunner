@@ -1,39 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 ilmerge 
-[/lib:directory]* - set /lib for each directory 
-[/log[:filename]] 
-[/keyfile:filename 
-[/delaysign]] 
-[/internalize[:filename]] 
-[/t[arget]:(library|exe|winexe)] 
-[/closed] 
-[/ndebug] 
-[/ver:version] 
-[/copyattrs [/allowMultiple]] 
-[/xmldocs] 
-[/attr:filename] 
+[/lib:directory]* - set /lib for each directory X
+[/log[:filename]] X
+[/keyfile:filename] X
+[/delaysign]] X
+[/internalize[:filename]] X
+[/t[arget]:(library|exe|winexe)] X
+[/closed] X
+[/ndebug] X
+[/ver:version] X
+[/copyattrs [/allowMultiple]] X
+[/xmldocs] X 
+[/attr:filename] X
 ([/targetplatform:<version>[,<platformdir>]]|v1|v1.1|v2|v4) 
-[/useFullPublicKeyForReferences] 
-[/zeroPeKind] 
-[/wildcards] 
-[/allowDup[:typename]]* 
-[/allowDuplicateResources] 
-[/union] 
+
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6
+C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1
+
+[/useFullPublicKeyForReferences] X
+[/zeroPeKind] X
+[/wildcards] X
+[/allowDup[:typename]]* X
+[/allowDuplicateResources] X
+[/union] X
 [/align:n] 
-/out:filename <primary assembly> [<other assemblies>...]
+/out:filename <primary assembly> [&lt;other assemblies>...] X
 -->
 <meta-runner name="ILMerge">
   <description>Run ILMerge within TeamCity</description>
   <settings>
     <parameters>
       <!-- Mandatory Fields -->
-      <param name="teamcity.tool.microsoft.ilmerge". value="" spec="text description='' display='normal' label='' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.output-file" value="" spec="text description='/out:filename [primary assembly] Specifies the path and filename that the target assembly will be written to.' display='normal' label='Output file:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.input-files" value="" spec="text description='[other assemblies...] Contains the path and filename of an input assembly. The first element of the array is considered to be the primary assembly' display='normal' label='Input assembly:' validationMode='not_empty'" />
       <!-- Optional Fields -->
-      <param name="teamcity.tool.microsoft.ilmerge" value="" spec="text description='' display='normal' label='' validationMode=''" />
-      <param name="teamcity.tool.microsoft.ilmerge" value="false" spec="checkbox checkedValue='true' uncheckedValue='false' description='Specifies that all tags should be included in the release notes, if not specified then only the issues since the last tag are included.' display='normal' label='All Tags:' validationMode='any'" />
-      <param name="teamcity.tool.microsoft.ilmerge" value="" spec="select data_1='tomcat7x' data_3='tomcat6x' data_5='jetty9x' data_7='jetty8x' description='Select type and version of the servlet container' display='normal' label='Container type:' label_1='Tomcat 7.x' label_3='Tomcat 6.x' label_5='Jetty 9.x' label_7='Jetty 8.x'" />
-      
+      <param name="teamcity.tool.microsoft.ilmerge.lib" value="" spec="text description='[/lib:directory] Sets the directories to be used to search for input assemblies' display='normal' label='Search Directories:' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.log" value="" spec="text description='[/log[:filename]] The path and filename that log messages are written to' display='normal' label='Log:' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.keyfile" value="" spec="text description='[/keyfile:filename] Specifies the path and filename to a .snk file. The target assembly will be signed with its contents and will then have a strong name. It can be used with the DelaySign property to have the target assembly delay signed. This can be done even if the primary assembly was fully signed.' display='normal' label='Key File' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.delaysign" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/delaysign]] When this is set the target assembly will be delay signed. This can be set only in conjunction with the /keyfile option' display='normal' label='Delay Sign' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.internalize" value="" spec="text description='[/internalize[:filename]] This controls whether types in assemblies other than the primary assembly have their visibility modified. When it is true, then all non-exempt types that are visible outside of their assembly have their visibility modified so that they are not visible from outside of the merged assembly. A type is exempt if its full name matches a line from the ExcludeFile using the .NET regular expression engine.' display='normal' label='Internalize:' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.target" value="" spec="select data_1='library' data_3='exe' data_5='winexe' description='[/t[arget]:(library|exe|winexe)] This controls whether the target assembly is created as a library, a console application or as a Windows application. When it is not specified, then the target assembly will be the same kind as that of the primary assembly. (In that case, the file extensions found on the specified target assembly and the primary assembly must match.) When it is specified, then the file extension of the target assembly must match the specification.' display='normal' label='Target:' label_1='Library' label_3='Console App' label_5='Windows App'" />
+      <param name="teamcity.tool.microsoft.ilmerge.closed" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/closed] When this is set before calling Merge, then the transitive closure of the input assemblies is computed and added to the list of input assemblies. An assembly is considered part of the transitive closure if it is referenced, either directly or indirectly, from one of the originally specified input assemblies and it has an external reference to one of the input assemblies, or one of the assemblies that has such a reference' display='normal' label='Closed:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.ndebug" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/ndebug] When this is set to true, ILMerge creates a .pdb file for the output assembly and merges into it any .pdb files found for input assemblies.' display='normal' label='Debug' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.ver" value="" spec="text description='[/ver:version] When set, the target assembly will be given its value as the version number of the assembly. When specified on the command line, the version is read in as a string and should look like 6.2.1.3. The version must be a valid assembly version as defined by the attribute AssemblyVersion in the System.Reflection namespace.' display='normal' label='Version:' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.copyattrs" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/copyattrs] When set, the assembly level attributes of each input assembly are copied over into the target assembly. Any duplicate attribute overwrites a previously copied attribute. If you want to allow duplicates (for those attributes whose type specifies AllowMultiple in their definition), then you can also set the allowMultiple flag. The input assemblies are processed in the order they are specified. This option is mutually exclusive with specifying an attribute assembly, i.e., the property AttributeFile. When an attribute assembly is specified, then no assembly-level attributes are copied over from the input assemblies.' display='normal' label='Copy Attributes:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.allowMultiple" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/allowMultiple] When this is set before calling Merge, then if the CopyAttributes property is also set, any assembly-level attributes names that have the same type are copied over into the target directory as long as the definition of the attribute type specifies that AllowMultiple is true' display='normal' label='Allow Multiple Attributes:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.xmldocs" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/xmldocs] Controls whether XML documentation files are merged to produce an XML documentation file for the target assembly' display='normal' label='XML Documentation:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.attr" value="" spec="text description='[/attr:filename] Specifies the path and filename to an atttribute assembly, an assembly that will be used to get all of the assembly-level attributes such as Culture, Version, etc. It will also be used to get the Win32 Resources from. It is mutually exclusive with the CopyAttributes. When it is not specified, then the Win32 Resources from the primary assembly are copied over into the target assembly. If it is not a full path, then the current directory is used.' display='normal' label='Attribute Assembly File Path:' validationMode=''" />
+      <param name="teamcity.tool.microsoft.ilmerge.targetplatform" value="" spec="select data_1='v3.5' data_2='v4.0' data_3='v4.5' data_4='v4.5.1' data_5='v4.5.2' data_6='v4.6' data_7='v4.6.1' description='([/targetplatform:version[,platformdir]]|v1|v1.1|v2|v4) This method sets the .NET Framework for the target assembly to be the one specified by platform. Valid strings for the first argument are v1, v1.1, v2, and v4. The v is case insensitive and is also optional. This way ILMerge can be used to cross-compile, i.e., it can run in one version of the framework and generate the target assembly so it will run under a different assembly. The second argument is the directory in which mscorlib.dll is to be found.' display='normal' label='Target Platform:' label_1='v3.5' label_2='v4.0' label_3='v4.5' label_4='v4.5.1' label_5='v4.5.2' label_6='v4.6' label_7='v4.6.1' " />
+      <param name="teamcity.tool.microsoft.ilmerge.useFullPublicKeyForReferences" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/useFullPublicKeyForReferences] Indicates whether external assembly references in the manifest of the target assembly will use full public keys (false) or public key tokens (true).' display='normal' label='Use Full Public Key For References:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.zeroPeKind" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/zeroPeKind] If an assemblys PeKind flag (this is the value of the field listed as .corflags in the Manifest) is zero it will be treated as if it was IL only. This can be used to allow C++ assemblies to be merged; it does not appear that the C++ compiler writes the value as ILonly. However, if such an assembly has any non-IL features, then they will probably not be copied over into the target assembly correctly. So please use this option with caution.' display='normal' label='Zero PeKind:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.wildcards" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/wildcards] Any wild cards in file names are expanded and all matching files will be used as input. Note that because the wild card matching is done by a call to Directory.GetFiles, it does not allow the characters .. to appear in a file name. So if you want to specify a relative path containing .. to move up a directory, you will have to use it with the /lib option. That option does allow the use of .. to move up directories.' display='normal' label='Wildcards' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.allowDup" value="" spec="text description='[/allowDup[:typename]]* The normal behavior of ILMerge is to not allow there to be more than one public type with the same name. If such a duplicate is found, then an exception is thrown. However, ILMerge can just rename the type so that it no longer causes a conflict. For private types, this is not a problem since no outside client can see it anyway, so ILMerge just does the renaming by default. For public types, it is not often a useful feature to have it renamed. However, there are situations where it is needed. In particular, for obfuscated assemblies, it seems that the obfuscator defines an attribute and creates an assembly-level attribute for the obfuscated assembly using that attribute. This would mean that obfuscated assemblies cannot be merged.
+So this option allows the user to either allow all public types to be renamed when they are duplicates, or to specify it for arbitrary type names. On the command line, there can be as many options as desired, if followed by a colon and a type name, otherwise just specify it alone with no colon (and type name) to allow all duplicates.' display='normal' label='Allow Duplicates:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.allowDuplicateResources" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/allowDuplicateResources]' display='normal' label='Allow Duplicate Resources:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.union" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/union] When this is true, then types with the same name are all merged into a single type in the target assembly. The single type is the union of all of the individual types in the input assemblies: it contains all of the members from each of the corresponding types in the input assemblies. It cannot be specified at the same time as /allowDup.' display='normal' label='Union' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.align" value="" spec="text description='[/align:n] This controls the file alignment used for the target assembly. The setter sets the value to the largest power of two that is no larger than the supplied argument, and is at least 512.' display='normal' label='Align:' validationMode='not_empty'" />
     </parameters>
     <build-runners>
       <runner name="ILMerge" type="jetbrains_powershell">
@@ -48,17 +76,106 @@ ilmerge
           <param name="jetbrains_powershell_script_code">
             <![CDATA[
 $toolPath = "`"%teamcity.agent.tools.dir%\ilmerge-metarunner\bin\ilmerge.exe`"";
-$apiKey = "%teamcity.tool.newrelic.deploymentnotifier.apikey%";
-$changeLog = "%teamcity.tool.newrelic.deploymentnotifier.changelog%";
+$input-files = "%teamcity.tool.microsoft.ilmerge.input-files%"
+$output-file = "%teamcity.tool.microsoft.ilmerge.output-file%"
+$lib = "%teamcity.tool.microsoft.ilmerge.lib%"
+$log = "%teamcity.tool.microsoft.ilmerge.log%"
+$keyfile = "%teamcity.tool.microsoft.ilmerge.keyfile%"
+$delaysign = "%teamcity.tool.microsoft.ilmerge.delaysign%"
+$internalize = "%teamcity.tool.microsoft.ilmerge.internalize%"
+$target = "%teamcity.tool.microsoft.ilmerge.target%"
+$closed = "%teamcity.tool.microsoft.ilmerge.closed%"
+$ndebug = "%teamcity.tool.microsoft.ilmerge.ndebug%"
+$ver = "%teamcity.tool.microsoft.ilmerge.ver%"
+$copyattrs = "%teamcity.tool.microsoft.ilmerge.copyattrs%"
+$allowMultiple = "%teamcity.tool.microsoft.ilmerge.allowMultiple%"
+$xmldocs = "%teamcity.tool.microsoft.ilmerge.xmldocs%"
+$attr = "%teamcity.tool.microsoft.ilmerge.attr%"
+$targetplatform = "%teamcity.tool.microsoft.ilmerge.targetplatform%"
+$useFullPublicKeyForReferences = "%teamcity.tool.microsoft.ilmerge.useFullPublicKeyForReferences%"
+$zeroPeKind = "%teamcity.tool.microsoft.ilmerge.zeroPeKind%"
+$wildcards = "%teamcity.tool.microsoft.ilmerge.wildcards%"
+$allowDup = "%teamcity.tool.microsoft.ilmerge.allowDup%"
+$allowDuplicateResources = "%teamcity.tool.microsoft.ilmerge.allowDuplicateResources%"
+$union = "%teamcity.tool.microsoft.ilmerge.union%"
+$align = "%teamcity.tool.microsoft.ilmerge.align%"
 
 try 
 {
   $command = "";
 
-  if ([String]::IsNullOrEmpty($apiKey)){
-    throw "API Key is required"
+  if ([String]::IsNullOrEmpty($input-files)){
+      throw "Input files are required"
   } else {
-    $command += "-H `"x-api-key:$apiKey`" ";
+        $command += "";
+  }
+  if ([String]::IsNullOrEmpty($output-file)){
+        throw "Input files are required"
+  } else {
+        $command += "";
+  }
+  if ([String]::IsNullOrEmpty($lib)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($log)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($keyfile)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($delaysign)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($internalize)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($target)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($closed)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($ndebug)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($ver)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($copyattrs)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($allowMultiple)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($xmldocs)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($attr)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($targetplatform)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($useFullPublicKeyForReferences)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($zeroPeKind)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($wildcards)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($allowDup)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($allowDuplicateResources)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($union)){
+         $command += "";
+  }
+  if ([String]::IsNullOrEmpty($align)){
+         $command += "";
   }
 
   $commandToExecute = "& " + $toolPath + $command
