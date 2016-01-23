@@ -37,8 +37,8 @@ C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4
   <settings>
     <parameters>
       <!-- Mandatory Fields -->
-      <param name="teamcity.tool.microsoft.ilmerge.output-file" value="" spec="text description='/out:filename [primary assembly] Specifies the path and filename that the target assembly will be written to.' display='normal' label='Output file:' validationMode='not_empty'" />
-      <param name="teamcity.tool.microsoft.ilmerge.input-files" value="" spec="text description='[other assemblies...] Contains the path and filename of an input assembly. The first element of the array is considered to be the primary assembly' display='normal' label='Input assembly:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.outputFile" value="" spec="text description='/out:filename [primary assembly] Specifies the path and filename that the target assembly will be written to.' display='normal' label='Output file:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.inputFiles" value="" spec="text description='[other assemblies...] Contains the path and filename of an input assembly. The first element of the array is considered to be the primary assembly' display='normal' label='Input assembly:' validationMode='not_empty'" />
       <!-- Optional Fields -->
       <param name="teamcity.tool.microsoft.ilmerge.lib" value="" spec="text description='[/lib:directory] Sets the directories to be used to search for input assemblies' display='normal' label='Search Directories:' validationMode=''" />
       <param name="teamcity.tool.microsoft.ilmerge.log" value="" spec="text description='[/log[:filename]] The path and filename that log messages are written to' display='normal' label='Log:' validationMode=''" />
@@ -76,8 +76,8 @@ So this option allows the user to either allow all public types to be renamed wh
           <param name="jetbrains_powershell_script_code">
             <![CDATA[
 $toolPath = "`"%teamcity.agent.tools.dir%\ilmerge-metarunner\bin\ilmerge.exe`"";
-$input-files = "%teamcity.tool.microsoft.ilmerge.input-files%"
-$output-file = "%teamcity.tool.microsoft.ilmerge.output-file%"
+$inputFiles = "%teamcity.tool.microsoft.ilmerge.inputFiles%"
+$outputFile = "%teamcity.tool.microsoft.ilmerge.outputFile%"
 $lib = "%teamcity.tool.microsoft.ilmerge.lib%"
 $log = "%teamcity.tool.microsoft.ilmerge.log%"
 $keyfile = "%teamcity.tool.microsoft.ilmerge.keyfile%"
@@ -102,94 +102,127 @@ $align = "%teamcity.tool.microsoft.ilmerge.align%"
 
 try 
 {
-  $command = "";
+    $command = "";
+  
+    if (![String]::IsNullOrEmpty($lib)){
+        $command += " /lib " + $lib;
+    }
 
-  if ([String]::IsNullOrEmpty($input-files)){
-      throw "Input files are required"
-  } else {
-        $command += "";
-  }
-  if ([String]::IsNullOrEmpty($output-file)){
+    if (![String]::IsNullOrEmpty($log)){
+        $command += " /log " + $log;
+    }
+
+    if (![String]::IsNullOrEmpty($keyfile)){
+        $command += " /keyfile " + $keyfile;
+
+        if ($delaysign -eq "true"){
+            $command += " /delaysign";
+        }
+    }
+
+    if (![String]::IsNullOrEmpty($internalize)){
+        $command += " /internalize " + $internalize;
+    }
+
+    if (![String]::IsNullOrEmpty($target)){
+        $command += " /target:" + $target;
+    }
+
+    if ($closed -eq "true"){
+        $command += " /closed";
+    }
+
+    if ($ndebug -eq "true"){
+        $command += " /ndebug";
+    }
+
+    if (![String]::IsNullOrEmpty($ver)){
+        $command += " /ver " + $ver;
+    }
+
+    if ($copyattrs -eq "true"){
+        $command += " /copyattrs";
+    }
+
+    if ($allowMultiple -eq "true"){
+        $command += " /allowMultiple";
+    }
+
+    if ($xmldocs -eq "true"){
+        $command += " /xmldocs";
+    }
+
+    if (![String]::IsNullOrEmpty($attr)){
+        $command += " /attr " + $attr;
+    }
+
+    if (![String]::IsNullOrEmpty($targetplatform)){
+        $command += " /targetplatform:";
+    
+        switch ($targetplatform) 
+        { 
+            "v3.5" { $command += "`"v2,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5`""; } 
+            "v4.0" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"; }
+            "v4.5" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5"; } 
+            "v4.5.1" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1"; }
+            "v4.5.2" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2`""; }
+            "v4.6" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6"; }
+            "v4.6" { $command += "v4,v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"; } 
+        }
+    }
+
+    if ($useFullPublicKeyForReferences -eq "true"){
+        $command += " /useFullPublicKeyForReferences";
+    }
+
+    if ($zeroPeKind -eq "true"){
+        $command += " /zeroPeKind";
+    }
+
+    if ($wildcards-eq "true"){
+        $command += " /wildcards";
+    }
+
+    if (![String]::IsNullOrEmpty($allowDup)){
+        $command += " /allowDup " + $allowDup;
+    }
+
+    if ($allowDuplicateResources -eq "true"){
+        $command += " /allowDuplicateResources";
+    }
+
+    if ($union -eq "true"){
+        $command += " /union";
+    }
+
+    if (![String]::IsNullOrEmpty($align)){
+        $command += " /align " + $align;
+    }
+
+    if ([String]::IsNullOrEmpty($inputFiles)){
         throw "Input files are required"
-  } else {
-        $command += "";
-  }
-  if ([String]::IsNullOrEmpty($lib)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($log)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($keyfile)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($delaysign)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($internalize)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($target)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($closed)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($ndebug)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($ver)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($copyattrs)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($allowMultiple)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($xmldocs)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($attr)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($targetplatform)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($useFullPublicKeyForReferences)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($zeroPeKind)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($wildcards)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($allowDup)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($allowDuplicateResources)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($union)){
-         $command += "";
-  }
-  if ([String]::IsNullOrEmpty($align)){
-         $command += "";
-  }
+    } else {
+        $command += " " + $inputFiles;
+    }
 
-  $commandToExecute = "& " + $toolPath + $command
-  
-  Write-Host "Command to Execute: " $commandToExecute
+    if ([String]::IsNullOrEmpty($outputFile)){
+        throw "Output files are required"
+    } else {
+        $command += " /out:" + $outputFile;
+    }
 
-  $result = Invoke-Expression $commandToExecute
+    $commandToExecute = "& " + $toolPath + $command
   
-  Write-Host $result
+    Write-Host "Command to Execute: " $commandToExecute
+
+    $result = Invoke-Expression $commandToExecute
+  
+    Write-Host $result
 } 
 catch 
 {
-  Write-Error $_
-  [System.Environment]::Exit(1)
+    Write-Error $_
+    [System.Environment]::Exit(1)
 }
             ]]>
           </param>
