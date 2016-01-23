@@ -57,11 +57,12 @@ C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4
       <param name="teamcity.tool.microsoft.ilmerge.useFullPublicKeyForReferences" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/useFullPublicKeyForReferences] Indicates whether external assembly references in the manifest of the target assembly will use full public keys (false) or public key tokens (true).' display='normal' label='Use Full Public Key For References:' validationMode='any'" />
       <param name="teamcity.tool.microsoft.ilmerge.zeroPeKind" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/zeroPeKind] If an assemblys PeKind flag (this is the value of the field listed as .corflags in the Manifest) is zero it will be treated as if it was IL only. This can be used to allow C++ assemblies to be merged; it does not appear that the C++ compiler writes the value as ILonly. However, if such an assembly has any non-IL features, then they will probably not be copied over into the target assembly correctly. So please use this option with caution.' display='normal' label='Zero PeKind:' validationMode='any'" />
       <param name="teamcity.tool.microsoft.ilmerge.wildcards" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/wildcards] Any wild cards in file names are expanded and all matching files will be used as input. Note that because the wild card matching is done by a call to Directory.GetFiles, it does not allow the characters .. to appear in a file name. So if you want to specify a relative path containing .. to move up a directory, you will have to use it with the /lib option. That option does allow the use of .. to move up directories.' display='normal' label='Wildcards' validationMode='any'" />
-      <param name="teamcity.tool.microsoft.ilmerge.allowDup" value="" spec="text description='[/allowDup[:typename]]* The normal behavior of ILMerge is to not allow there to be more than one public type with the same name. If such a duplicate is found, then an exception is thrown. However, ILMerge can just rename the type so that it no longer causes a conflict. For private types, this is not a problem since no outside client can see it anyway, so ILMerge just does the renaming by default. For public types, it is not often a useful feature to have it renamed. However, there are situations where it is needed. In particular, for obfuscated assemblies, it seems that the obfuscator defines an attribute and creates an assembly-level attribute for the obfuscated assembly using that attribute. This would mean that obfuscated assemblies cannot be merged.
-So this option allows the user to either allow all public types to be renamed when they are duplicates, or to specify it for arbitrary type names. On the command line, there can be as many options as desired, if followed by a colon and a type name, otherwise just specify it alone with no colon (and type name) to allow all duplicates.' display='normal' label='Allow Duplicates:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.allowDup" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/allowDup] The normal behavior of ILMerge is to not allow there to be more than one public type with the same name. If such a duplicate is found, then an exception is thrown...' display='normal' label='Allow Duplicates:' validationMode='any'" />
+      <param name="teamcity.tool.microsoft.ilmerge.renameDup" value="" spec="text description='[/allowDup[:typename]]* ...however, ILMerge can just rename the type so that it no longer causes a conflict. For private types, this is not a problem since no outside client can see it anyway, so ILMerge just does the renaming by default. For public types, it is not often a useful feature to have it renamed. However, there are situations where it is needed. In particular, for obfuscated assemblies, it seems that the obfuscator defines an attribute and creates an assembly-level attribute for the obfuscated assembly using that attribute. This would mean that obfuscated assemblies cannot be merged.
+So this option allows the user to either allow all public types to be renamed when they are duplicates, or to specify it for arbitrary type names. On the command line, there can be as many options as desired, if followed by a colon and a type name, otherwise just specify it alone with no colon (and type name) to allow all duplicates.' display='normal' label='Allow Duplicates (Rename Types):' validationMode=''" />
       <param name="teamcity.tool.microsoft.ilmerge.allowDuplicateResources" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/allowDuplicateResources]' display='normal' label='Allow Duplicate Resources:' validationMode='any'" />
       <param name="teamcity.tool.microsoft.ilmerge.union" value="" spec="checkbox checkedValue='true' uncheckedValue='false' description='[/union] When this is true, then types with the same name are all merged into a single type in the target assembly. The single type is the union of all of the individual types in the input assemblies: it contains all of the members from each of the corresponding types in the input assemblies. It cannot be specified at the same time as /allowDup.' display='normal' label='Union' validationMode='any'" />
-      <param name="teamcity.tool.microsoft.ilmerge.align" value="" spec="text description='[/align:n] This controls the file alignment used for the target assembly. The setter sets the value to the largest power of two that is no larger than the supplied argument, and is at least 512.' display='normal' label='Align:' validationMode='not_empty'" />
+      <param name="teamcity.tool.microsoft.ilmerge.align" value="" spec="text description='[/align:n] This controls the file alignment used for the target assembly. The setter sets the value to the largest power of two that is no larger than the supplied argument, and is at least 512.' display='normal' label='Align:' validationMode=''" />
     </parameters>
     <build-runners>
       <runner name="ILMerge" type="jetbrains_powershell">
@@ -76,8 +77,8 @@ So this option allows the user to either allow all public types to be renamed wh
           <param name="jetbrains_powershell_script_code">
             <![CDATA[
 $toolPath = "`"%teamcity.agent.tools.dir%\ilmerge-metarunner\bin\ilmerge.exe`"";
-$inputFiles = "%teamcity.tool.microsoft.ilmerge.inputFiles%"
-$outputFile = "%teamcity.tool.microsoft.ilmerge.outputFile%"
+$inputFiles = '%teamcity.tool.microsoft.ilmerge.inputFiles%'
+$outputFile = '%teamcity.tool.microsoft.ilmerge.outputFile%'
 $lib = "%teamcity.tool.microsoft.ilmerge.lib%"
 $log = "%teamcity.tool.microsoft.ilmerge.log%"
 $keyfile = "%teamcity.tool.microsoft.ilmerge.keyfile%"
@@ -96,6 +97,7 @@ $useFullPublicKeyForReferences = "%teamcity.tool.microsoft.ilmerge.useFullPublic
 $zeroPeKind = "%teamcity.tool.microsoft.ilmerge.zeroPeKind%"
 $wildcards = "%teamcity.tool.microsoft.ilmerge.wildcards%"
 $allowDup = "%teamcity.tool.microsoft.ilmerge.allowDup%"
+$renameDup = "%teamcity.tool.microsoft.ilmerge.renameDup%"
 $allowDuplicateResources = "%teamcity.tool.microsoft.ilmerge.allowDuplicateResources%"
 $union = "%teamcity.tool.microsoft.ilmerge.union%"
 $align = "%teamcity.tool.microsoft.ilmerge.align%"
@@ -179,12 +181,16 @@ try
         $command += " /zeroPeKind";
     }
 
-    if ($wildcards-eq "true"){
+    if ($wildcards -eq "true"){
         $command += " /wildcards";
     }
 
-    if (![String]::IsNullOrEmpty($allowDup)){
-        $command += " /allowDup " + $allowDup;
+    if ($allowDup -eq "true"){
+        $command += " /allowDup";
+
+        if (![String]::IsNullOrEmpty($renameDup)){
+            $command += " " + $renameDup;
+        }
     }
 
     if ($allowDuplicateResources -eq "true"){
