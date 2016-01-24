@@ -12,7 +12,7 @@ To install the plugin, first download the zip from the [releases section](https:
 We've tested the Meta-Runner but please raise an issue if you encounter any problems using this plugin.
 
 
-[@HowardvRooijen](https://twitter.com/howardvrooijen) | [@endjin](https://twitter.com/endjin)
+[@HowardvRooijen](https://twitter.com/howardvrooijen) | [@endjin](https://twitter.com/endjin) | This is an [endjin Open Source project](https://endjin.com/open-source).
 
 ---
 
