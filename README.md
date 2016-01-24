@@ -11,6 +11,9 @@ To install the plugin, first download the zip from the [releases section](https:
 ##Issues
 We've tested the Meta-Runner but please raise an issue if you encounter any problems using this plugin.
 
+
 [@HowardvRooijen](https://twitter.com/howardvrooijen) | [@endjin](https://twitter.com/endjin)
+
+---
 
 ILMerge is Copyright (C) Microsoft Corporation. All rights reserved. 
