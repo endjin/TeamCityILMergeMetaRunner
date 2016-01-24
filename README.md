@@ -9,7 +9,7 @@ A TeamCity Meta-Runner that provides a user interface to configure and run [ILMe
 To install the plugin, first download the zip from the [releases section](https://github.com/endjin/TeamCityILMergeMetaRunner/releases) in the GitHub repo, then log into TeamCity with an account that has Admin privileges. Then navigate to Administration > Server Administration > Plugins List and then use the "Upload plugin zip" hyperlink.
 
 ##Issues
-We've tested the Meta-Runner but please raise an issue if you encounter any problems using this plugin.
+We've tested the Meta-Runner for our main use cases, but please raise an issue if you encounter any problems using this plugin.
 
 
 [@HowardvRooijen](https://twitter.com/howardvrooijen) | [@endjin](https://twitter.com/endjin) | This is an [endjin Open Source project](https://endjin.com/open-source).
