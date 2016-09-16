@@ -164,12 +164,12 @@ try
         switch ($targetplatform) 
         { 
             "v3.5" { $command += "`"v2,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5`""; } 
-            "v4.0" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"; }
-            "v4.5" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5"; } 
-            "v4.5.1" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1"; }
+            "v4.0" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0`""; }
+            "v4.5" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5`""; } 
+            "v4.5.1" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.1`""; }
             "v4.5.2" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2`""; }
-            "v4.6" { $command += "v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6"; }
-            "v4.6" { $command += "v4,v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"; } 
+            "v4.6" { $command += "`"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6`""; }
+            "v4.6" { $command += "`"v4,v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1`""; } 
         }
     }
 
