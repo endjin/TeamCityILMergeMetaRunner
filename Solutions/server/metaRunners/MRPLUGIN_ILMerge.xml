@@ -108,15 +108,15 @@ try
     $command = "";
   
     if (![String]::IsNullOrEmpty($lib)){
-        $command += " /lib " + $lib;
+        $command += " /lib:" + $lib;
     }
 
     if (![String]::IsNullOrEmpty($log)){
-        $command += " /log " + $log;
+        $command += " /log:" + $log;
     }
 
     if (![String]::IsNullOrEmpty($keyfile)){
-        $command += " /keyfile " + $keyfile;
+        $command += " /keyfile:" + $keyfile;
 
         if ($delaysign -eq "true"){
             $command += " /delaysign";
@@ -124,7 +124,7 @@ try
     }
 
     if (![String]::IsNullOrEmpty($internalize)){
-        $command += " /internalize " + $internalize;
+        $command += " /internalize:" + $internalize;
     }
 
     if (![String]::IsNullOrEmpty($target)){
@@ -140,7 +140,7 @@ try
     }
 
     if (![String]::IsNullOrEmpty($ver)){
-        $command += " /ver " + $ver;
+        $command += " /ver:" + $ver;
     }
 
     if ($copyattrs -eq "true"){
@@ -156,7 +156,7 @@ try
     }
 
     if (![String]::IsNullOrEmpty($attr)){
-        $command += " /attr " + $attr;
+        $command += " /attr:" + $attr;
     }
 
     if (![String]::IsNullOrEmpty($targetplatform)){
@@ -191,7 +191,7 @@ try
         $command += " /allowDup";
 
         if (![String]::IsNullOrEmpty($renameDup)){
-            $command += " " + $renameDup;
+            $command += ":" + $renameDup;
         }
     }
 
@@ -204,7 +204,7 @@ try
     }
 
     if (![String]::IsNullOrEmpty($align)){
-        $command += " /align " + $align;
+        $command += " /align:" + $align;
     }
 
     if ([String]::IsNullOrEmpty($inputFiles)){
